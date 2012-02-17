@@ -1,0 +1,10 @@
+/.deps
+/.libs
+/Makefile.in
+/Makefile
+/howto_swig.cc
+/howto_swig.py
+/gnuradio
+/guile
+/python
+/run_guile_tests

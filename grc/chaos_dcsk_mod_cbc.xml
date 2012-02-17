@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<block>
+  <name>Chaos Modulator</name>
+  <key>chaos_dcsk_mod_cbc</key>
+  <category>Chaos</category>
+  <import>import chaos</import>
+  <make>chaos.dcsk_mod_cbc($n_samples)</make>
+  <callback>set_n_samples($n_samples)</callback>
+
+  <param>
+    <name>Number of samples</name>
+    <key>n_samples</key>
+    <value>50</value>
+    <type>int</type>
+  </param>
+
+  <check>$n_samples &gt; 0</check>
+
+  <sink>
+    <name>chaos</name>
+    <type>complex</type>
+  </sink>
+
+  <sink>
+    <name>data</name>
+    <type>byte</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+  </source>
+</block>
+

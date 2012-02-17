@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<block>
+  <name>Chaos Generator1</name>
+  <key>chaos_gen_logi_map_f</key>
+  <category>Chaos</category>
+  <import>import chaos</import>
+  <make>chaos.gen_logi_map_f($seed)</make>
+
+  <param>
+    <name>Seed value</name>
+    <key>seed</key>
+    <value>0.1</value>
+    <type>real</type>
+  </param>
+
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>
+

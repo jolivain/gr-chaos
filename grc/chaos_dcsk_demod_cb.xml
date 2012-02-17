@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<block>
+  <name>Chaos Demodulator</name>
+  <key>chaos_dcsk_demod_cb</key>
+  <category>Chaos</category>
+  <import>import chaos</import>
+  <make>chaos.dcsk_demod_cb($n_samples)</make>
+  <callback>set_n_samples($n_samples)</callback>
+
+  <param>
+    <name>Number of samples</name>
+    <key>n_samples</key>
+    <value>50</value>
+    <type>int</type>
+  </param>
+
+  <check>$n_samples &gt; 0</check>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+</block>
+

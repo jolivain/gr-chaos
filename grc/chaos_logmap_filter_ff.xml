@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<block>
+  <name>LogMap Filter</name>
+  <key>chaos_logmap_filter_ff</key>
+  <category>Chaos</category>
+  <import>import chaos</import>
+  <make>chaos.logmap_filter_ff()</make>
+
+  <sink>
+    <name>in</name>
+    <type>float</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>
