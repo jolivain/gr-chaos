@@ -27,5 +27,5 @@ install(FILES
     chaos_dcsk_mod_cbc.h
     chaos_gen_logi_map_f.h
     chaos_logmap_filter_ff.h
-    DESTINATION include/howto
+    DESTINATION include/chaos
 )
