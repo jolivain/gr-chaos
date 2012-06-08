@@ -50,7 +50,7 @@ typedef boost::shared_ptr<chaos_gen_logi_map_f> chaos_gen_logi_map_f_sptr;
 CHAOS_API chaos_gen_logi_map_f_sptr chaos_make_gen_logi_map_f (float seed);
 
 /*!
- * \Generates chaos samples depending on the initial seed
+ * \brief Generates chaos samples depending on the initial seed.
  *
  * This uses the preferred technique: subclassing gr_sync_block.
  */
