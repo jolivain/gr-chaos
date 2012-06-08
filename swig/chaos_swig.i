@@ -1,6 +1,11 @@
 /* -*- c++ -*- */
 
+#define CHAOS_API
+
 %include "gnuradio.i"			// the common stuff
+
+//load generated python docstrings
+%include "chaos_swig_doc.i"
 
 %{
 #include "chaos_dcsk_demod_cb.h"
@@ -17,13 +22,3 @@
 %include "chaos_dcsk_mod_cbc.i"
 %include "chaos_gen_logi_map_f.i"
 %include "chaos_logmap_filter_ff.i"
-
-#if SWIGGUILE
-%scheme %{
-(load-extension-global "libguile-gnuradio-chaos_swig" "scm_init_gnuradio_chaos_swig_module")
-%}
-
-%goops %{
-(use-modules (gnuradio gnuradio_core_runtime))
-%}
-#endif
