@@ -22,6 +22,7 @@
 #ifndef INCLUDED_CHAOS_LOGMAP_FILTER_FF_H
 #define INCLUDED_CHAOS_LOGMAP_FILTER_FF_H
 
+#include <chaos_api.h>
 #include <gr_sync_block.h>
 
 class chaos_logmap_filter_ff;
@@ -46,7 +47,7 @@ typedef boost::shared_ptr<chaos_logmap_filter_ff> chaos_logmap_filter_ff_sptr;
  * constructor is private.  chaos_make_logmap_filter_ff is the public
  * interface for creating new instances.
  */
-chaos_logmap_filter_ff_sptr chaos_make_logmap_filter_ff ();
+CHAOS_API chaos_logmap_filter_ff_sptr chaos_make_logmap_filter_ff ();
 
 /*!
  * \brief square2 a stream of floats.
@@ -54,13 +55,13 @@ chaos_logmap_filter_ff_sptr chaos_make_logmap_filter_ff ();
  *
  * This uses the preferred technique: subclassing gr_sync_block.
  */
-class chaos_logmap_filter_ff : public gr_sync_block
+class CHAOS_API chaos_logmap_filter_ff : public gr_sync_block
 {
 private:
   // The friend declaration allows howto_make_square2_ff to
   // access the private constructor.
 
-  friend chaos_logmap_filter_ff_sptr chaos_make_logmap_filter_ff ();
+  friend CHAOS_API chaos_logmap_filter_ff_sptr chaos_make_logmap_filter_ff ();
 
   chaos_logmap_filter_ff ();  	// private constructor
 

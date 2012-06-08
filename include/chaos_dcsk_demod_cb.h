@@ -22,6 +22,7 @@
 #ifndef INCLUDED_CHAOS_DCSK_DEMOD_CB_H
 #define INCLUDED_CHAOS_DCSK_DEMOD_CB_H
 
+#include <chaos_api.h>
 #include <gr_block.h>
 
 class chaos_dcsk_demod_cb;
@@ -46,7 +47,7 @@ typedef boost::shared_ptr<chaos_dcsk_demod_cb> chaos_dcsk_demod_cb_sptr;
  * constructor is private.  chaos_make_dcsk_demod_cb is the public
  * interface for creating new instances.
  */
-chaos_dcsk_demod_cb_sptr chaos_make_dcsk_demod_cb (int n_samples);
+CHAOS_API chaos_dcsk_demod_cb_sptr chaos_make_dcsk_demod_cb (int n_samples);
 
 /*!
  * \brief Differential Chaos Shift Keying (DCSK) demodulator.
@@ -65,13 +66,13 @@ chaos_dcsk_demod_cb_sptr chaos_make_dcsk_demod_cb (int n_samples);
  *
  * \ingroup block
  */
-class chaos_dcsk_demod_cb : public gr_block
+class CHAOS_API chaos_dcsk_demod_cb : public gr_block
 {
 private:
   // The friend declaration allows chaos_make_dcsk_demod_cb to
   // access the private constructor.
 
-  friend chaos_dcsk_demod_cb_sptr chaos_make_dcsk_demod_cb (int n_samples);
+  friend CHAOS_API chaos_dcsk_demod_cb_sptr chaos_make_dcsk_demod_cb (int n_samples);
 
   int d_n_samples;
 

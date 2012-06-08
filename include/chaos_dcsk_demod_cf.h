@@ -22,6 +22,7 @@
 #ifndef INCLUDED_CHAOS_DCSK_DEMOD_CF_H
 #define INCLUDED_CHAOS_DCSK_DEMOD_CF_H
 
+#include <chaos_api.h>
 #include <gr_block.h>
 
 class chaos_dcsk_demod_cf;
@@ -46,7 +47,7 @@ typedef boost::shared_ptr<chaos_dcsk_demod_cf> chaos_dcsk_demod_cf_sptr;
  * constructor is private.  chaos_make_dcsk_demod_cf is the public
  * interface for creating new instances.
  */
-chaos_dcsk_demod_cf_sptr chaos_make_dcsk_demod_cf (int n_samples, int n_sync);
+CHAOS_API chaos_dcsk_demod_cf_sptr chaos_make_dcsk_demod_cf (int n_samples, int n_sync);
 
 /*!
  * \brief Differential Chaos Shift Keying (DCSK) soft demodulator.
@@ -74,11 +75,12 @@ chaos_dcsk_demod_cf_sptr chaos_make_dcsk_demod_cf (int n_samples, int n_sync);
  *
  * \ingroup block
  */
-class chaos_dcsk_demod_cf : public gr_block
+class CHAOS_API chaos_dcsk_demod_cf : public gr_block
 {
 private:
-  friend chaos_dcsk_demod_cf_sptr chaos_make_dcsk_demod_cf (int n_samples,
-							    int n_sync);
+  friend CHAOS_API chaos_dcsk_demod_cf_sptr
+    chaos_make_dcsk_demod_cf (int n_samples,
+                              int n_sync);
 
   int d_n_samples;
   int d_n_sync;

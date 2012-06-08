@@ -22,6 +22,7 @@
 #ifndef INCLUDED_CHAOS_DCSK_MOD_CBC_H
 #define INCLUDED_CHAOS_DCSK_MOD_CBC_H
 
+#include <chaos_api.h>
 #include <gr_block.h>
 
 class chaos_dcsk_mod_cbc;
@@ -46,7 +47,7 @@ typedef boost::shared_ptr<chaos_dcsk_mod_cbc> chaos_dcsk_mod_cbc_sptr;
  * constructor is private.  chaos_make_dcsk_mod_cbc is the public
  * interface for creating new instances.
  */
-chaos_dcsk_mod_cbc_sptr chaos_make_dcsk_mod_cbc (int n_samples);
+CHAOS_API chaos_dcsk_mod_cbc_sptr chaos_make_dcsk_mod_cbc (int n_samples);
 
 /*!
  * Do a chaos modulation using differential chaos shift keying.
@@ -56,13 +57,13 @@ chaos_dcsk_mod_cbc_sptr chaos_make_dcsk_mod_cbc (int n_samples);
  *
  * This uses the preferred technique: subclassing gr_block.
  */
-class chaos_dcsk_mod_cbc : public gr_block
+class CHAOS_API chaos_dcsk_mod_cbc : public gr_block
 {
 private:
   // The friend declaration allows chaos_make_mod_cbc to
   // access the private constructor.
 
-  friend chaos_dcsk_mod_cbc_sptr chaos_make_dcsk_mod_cbc (int n_samples);
+  friend CHAOS_API chaos_dcsk_mod_cbc_sptr chaos_make_dcsk_mod_cbc (int n_samples);
 
   int d_n_samples;
 

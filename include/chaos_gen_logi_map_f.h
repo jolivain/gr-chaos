@@ -22,6 +22,7 @@
 #ifndef INCLUDED_CHAOS_GEN_LOGI_MAP_F_H
 #define INCLUDED_CHAOS_GEN_LOGI_MAP_F_H
 
+#include <chaos_api.h>
 #include <gr_sync_block.h>
 
 class chaos_gen_logi_map_f;
@@ -46,20 +47,21 @@ typedef boost::shared_ptr<chaos_gen_logi_map_f> chaos_gen_logi_map_f_sptr;
  * constructor is private.  chaos_make_gen_logi_map_f is the public
  * interface for creating new instances.
  */
-chaos_gen_logi_map_f_sptr chaos_make_gen_logi_map_f (float seed);
+CHAOS_API chaos_gen_logi_map_f_sptr chaos_make_gen_logi_map_f (float seed);
 
 /*!
  * \Generates chaos samples depending on the initial seed
  *
  * This uses the preferred technique: subclassing gr_sync_block.
  */
-class chaos_gen_logi_map_f : public gr_sync_block
+class CHAOS_API chaos_gen_logi_map_f : public gr_sync_block
 {
 private:
   // The friend declaration allows chaos_make_gen_logi_map_f to
   // access the private constructor.
 
-  friend chaos_gen_logi_map_f_sptr chaos_make_gen_logi_map_f (float seed);
+  friend CHAOS_API chaos_gen_logi_map_f_sptr
+    chaos_make_gen_logi_map_f (float seed);
 
   float d_seed;
   float next_val;
