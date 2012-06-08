@@ -121,7 +121,7 @@ chaos_dcsk_demod_cf::general_work (int noutput_items,
                                    gr_vector_const_void_star &input_items,
                                    gr_vector_void_star &output_items)
 {
-  const int needed_smp = 2 * d_n_samples + 2 * d_n_sync;
+  const unsigned int needed_smp = 2 * d_n_samples + 2 * d_n_sync;
   const gr_complex *in_signal = (const gr_complex *) input_items[0];
   unsigned int ninput_signal = ninput_items[0];
   float *out_info = (float *) output_items[0];
@@ -130,7 +130,7 @@ chaos_dcsk_demod_cf::general_work (int noutput_items,
   int out_bits = 0;
   gr_complex best_cor(0.0, 0.0);
   int best_id = 0;
-  int pos = 0;
+  unsigned int pos = 0;
   int i;
 
   // Check somewhere that n_sync < n_sample/2
