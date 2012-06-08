@@ -49,15 +49,22 @@ typedef boost::shared_ptr<chaos_dcsk_demod_cb> chaos_dcsk_demod_cb_sptr;
 chaos_dcsk_demod_cb_sptr chaos_make_dcsk_demod_cb (int n_samples);
 
 /*!
- * \Does a demodulation of a chaotic signal modulated using differential chaos shift keying.
- * \The parameter n_samples determines the number of chaos samples per bit 
- * \( the number of samples for the demodulator must be the same as the modulator)	
- * \ We have 2*n_samples per bit if we include the reference and the data.  
- * \ingroup block
+ * \brief Differential Chaos Shift Keying (DCSK) demodulator.
  *
- * This uses the preferred technique: subclassing gr_block.
+ * This block implement a demodulation of a chaotic signal modulated
+ * using differential chaos shift keying.  The input is complex signal
+ * samples.  The output is a bit stream, each bit is encoded on a byte
+ * (to be feeded to a deframer).
+ *
+ * \param n_samples Number of reference chaos samples per symbol (the
+ * number of samples for the demodulator must be the same as the
+ * modulator).  Be aware that a DCSK symbol is composed of a reference
+ * and a data which have the same size.  So each output bit symbol
+ * will consume (2 * n_samples) input samples.  Take care when
+ * computing the sample rate.
+ *
+ * \ingroup block
  */
-
 class chaos_dcsk_demod_cb : public gr_block
 {
 private:

@@ -56,19 +56,19 @@ chaos_make_dcsk_demod_cc (int n_samples, int n_sync)
  * check that a valid number and type of inputs and outputs
  * are connected to this block.
  */
-static const int MIN_IN = 1;	// mininum number of input streams
-static const int MAX_IN = 1;	// maximum number of input streams
-static const int MIN_OUT = 1;	// minimum number of output streams
-static const int MAX_OUT = 1;	// maximum number of output streams
+static const int MIN_IN = 1;    // mininum number of input streams
+static const int MAX_IN = 1;    // maximum number of input streams
+static const int MIN_OUT = 1;   // minimum number of output streams
+static const int MAX_OUT = 1;   // maximum number of output streams
 
 /*
  * The private constructor
  */
 
-chaos_dcsk_demod_cc::chaos_dcsk_demod_cc(int n_samples, int n_sync)
+chaos_dcsk_demod_cc::chaos_dcsk_demod_cc (int n_samples, int n_sync)
   : gr_block ("dcsk_demod_cc",
-	      gr_make_io_signature (MIN_IN, MAX_IN, sizeof (gr_complex)),
-	      gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (gr_complex))),
+              gr_make_io_signature (MIN_IN, MAX_IN, sizeof (gr_complex)),
+              gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (gr_complex))),
     d_n_samples (n_samples),
     d_n_sync (n_sync)
 {
@@ -78,16 +78,15 @@ chaos_dcsk_demod_cc::chaos_dcsk_demod_cc(int n_samples, int n_sync)
 /*
  * Our virtual destructor.
  */
-chaos_dcsk_demod_cc::~chaos_dcsk_demod_cc()
+chaos_dcsk_demod_cc::~chaos_dcsk_demod_cc ()
 {
 }
 
 void
-chaos_dcsk_demod_cc::set_n_samples(int n_samples)
+chaos_dcsk_demod_cc::set_n_samples (int n_samples)
 {
-  if (n_samples < 1) {
+  if (n_samples < 1)
     n_samples = 1;
-  }
 
   d_n_samples = n_samples;
 
@@ -95,33 +94,32 @@ chaos_dcsk_demod_cc::set_n_samples(int n_samples)
 }
 
 void
-chaos_dcsk_demod_cc::forecast(int noutput_items,
-                              gr_vector_int &ninput_items_required)
+chaos_dcsk_demod_cc::forecast (int noutput_items,
+			       gr_vector_int &ninput_items_required)
 {
   ninput_items_required[0] = noutput_items * 2 * d_n_samples;
 }
 
 // Makes a cross-correlation of the reference and the data.
 gr_complex
-chaos_dcsk_demod_cc::cross_corr(const gr_complex * chaos_ref,
-                                const gr_complex * chaos_data)
+chaos_dcsk_demod_cc::cross_corr (const gr_complex * chaos_ref,
+                                 const gr_complex * chaos_data)
 {
   int i;
   gr_complex correlation(0.0, 0.0);
 
-  for (i = 0; i < d_n_samples; i++) {
+  for (i = 0; i < d_n_samples; i++)
     correlation += (chaos_ref[i] * conj(chaos_data[i]));
-  }
 
   return correlation;
 }
 
 
 int 
-chaos_dcsk_demod_cc::general_work(int noutput_items,
-                                  gr_vector_int &ninput_items,
-                                  gr_vector_const_void_star &input_items,
-                                  gr_vector_void_star &output_items)
+chaos_dcsk_demod_cc::general_work (int noutput_items,
+                                   gr_vector_int &ninput_items,
+                                   gr_vector_const_void_star &input_items,
+                                   gr_vector_void_star &output_items)
 {
   const int needed_smp = 2 * d_n_samples + 2 * d_n_sync;
   const gr_complex *in_signal = (const gr_complex *) input_items[0];

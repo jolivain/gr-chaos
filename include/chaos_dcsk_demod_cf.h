@@ -49,19 +49,36 @@ typedef boost::shared_ptr<chaos_dcsk_demod_cf> chaos_dcsk_demod_cf_sptr;
 chaos_dcsk_demod_cf_sptr chaos_make_dcsk_demod_cf (int n_samples, int n_sync);
 
 /*!
- * \Does a demodulation of a chaotic signal modulated using differential chaos shift keying.
- * \The parameter n_samples determines the number of chaos samples per bit 
- * \( the number of samples for the demodulator must be the same as the modulator)	
- * \ We have 2*n_samples per bit if we include the reference and the data.  
- * \ingroup block
+ * \brief Differential Chaos Shift Keying (DCSK) soft demodulator.
  *
- * This uses the preferred technique: subclassing gr_block.
+ * This block implement a demodulation of a chaotic signal modulated
+ * using differential chaos shift keying.  The input is complex signal
+ * samples.  The output is a soft bit stream, each bit is encoded on a
+ * float (to be feeded to an error correcting code).  This block also
+ * include a synchronization mechanism in order to correct the phase
+ * and frequency errors of the radios.
+ *
+ * \param n_samples Number of reference chaos samples per symbol (the
+ * number of samples for the demodulator must be the same as the
+ * modulator).  Be aware that a DCSK symbol is composed of a reference
+ * and a data which have the same size.  So each output bit symbol
+ * will consume (2 * n_samples) input samples.  Take care when
+ * computing the sample rate.
+ *
+ * \param n_sync Number of sample to search for a better correlation,
+ * before and after the current symbol.  The correlation search is
+ * optimized and does not fully recompute the cross correlation at
+ * each sample.  Each search will compute two complex multiplication,
+ * one addition and one substraction.  Setting n_sync to 0 will
+ * totally disable the synchronization search.
+ *
+ * \ingroup block
  */
-
 class chaos_dcsk_demod_cf : public gr_block
 {
 private:
-  friend chaos_dcsk_demod_cf_sptr chaos_make_dcsk_demod_cf (int n_samples, int n_sync);
+  friend chaos_dcsk_demod_cf_sptr chaos_make_dcsk_demod_cf (int n_samples,
+							    int n_sync);
 
   int d_n_samples;
   int d_n_sync;
@@ -78,7 +95,7 @@ public:
   }
 
   void set_n_samples (int n_samples);
-  
+
   ~chaos_dcsk_demod_cf();
 
   void forecast(int noutput_items, gr_vector_int &ninput_items_required);

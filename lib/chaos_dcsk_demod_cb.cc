@@ -29,11 +29,11 @@
 #include "config.h"
 #endif
 
+//#define DCSK_DEBUG
+
 #include <chaos_dcsk_demod_cb.h>
 #include <gr_io_signature.h>
-//#include <stdio.h>
 #include <iostream>
-//#include <cmath>
 #include <math.h>
 #include <complex>
 using namespace std;
@@ -67,7 +67,7 @@ static const int MAX_OUT = 1;        // maximum number of output streams
 
 chaos_dcsk_demod_cb::chaos_dcsk_demod_cb (int n_samples)
   : gr_block ("dcsk_demod_cb",
-              gr_make_io_signature (MIN_IN, MAX_IN, sizeof(gr_complex)),
+              gr_make_io_signature (MIN_IN, MAX_IN, sizeof (gr_complex)),
               gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (unsigned char))),
                         d_n_samples (n_samples)
 {
@@ -89,21 +89,24 @@ chaos_dcsk_demod_cb::set_n_samples (int n_samples)
 
   d_n_samples = n_samples;
 
-  //sets the rate as follow: output/input
-  set_relative_rate(1.0 / (double)(2*n_samples));
+  set_relative_rate(1.0 / (double)(2 * n_samples));
 }
 
 void
-chaos_dcsk_demod_cb::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+chaos_dcsk_demod_cb::forecast (int noutput_items,
+                               gr_vector_int &ninput_items_required)
 {
   ninput_items_required[0] = noutput_items * 2 * d_n_samples;
 }
 
-// Function that verifies if we have enough chaos samples at the input and enough bits available
-// at the output to completly demodulate the chaotic signal. The function returns the maximum number
-// of bits that can be computed.
+/*
+ * This function verifies that we have enough chaos samples at the
+ * input and enough space available for storing output bits to
+ * completly demodulate the chaotic signal.  This function returns the
+ * maximum number of bits that can be computed.
+ */
 unsigned int
-chaos_dcsk_demod_cb::verification(unsigned int n_input_signal,int output_bits)
+chaos_dcsk_demod_cb::verification (unsigned int n_input_signal, int output_bits)
 {
   unsigned int input_bits, n_bits;
 
@@ -117,9 +120,10 @@ chaos_dcsk_demod_cb::verification(unsigned int n_input_signal,int output_bits)
   return (n_bits);
 }
 
-// Makes a cross-correlation of the reference and the data.
+/* Makes a cross-correlation of the reference and the data. */
 gr_complex
-chaos_dcsk_demod_cb::cross_corr(const gr_complex * chaos_ref, const gr_complex * chaos_data)
+chaos_dcsk_demod_cb::cross_corr (const gr_complex * chaos_ref,
+                                 const gr_complex * chaos_data)
 {
   int i;
   gr_complex correlation(0, 0);
@@ -147,15 +151,13 @@ chaos_dcsk_demod_cb::general_work (int noutput_items,
 
   // done when all bits are set for the output
   for (i = 0; i < nbits_data; i++) {
-    // cross correlation of the reference and the data to obtain the information sent from the source
 
     correlation = cross_corr(&in_signal[ i * d_n_samples * 2],
                              &in_signal[(i * d_n_samples * 2) + d_n_samples]);
 
-    // signbit returns 0 if the argument is positive
-    if (signbit(correlation.real()) == 0)
+    if ( signbit(correlation.real() ) == 0)
       out_info[i] = 1;
-    else                                                // signbit returns non-zero if the argument is negative
+    else
       out_info[i] = 0;
   }
 

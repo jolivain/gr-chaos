@@ -49,42 +49,60 @@ typedef boost::shared_ptr<chaos_dcsk_demod_cc> chaos_dcsk_demod_cc_sptr;
 chaos_dcsk_demod_cc_sptr chaos_make_dcsk_demod_cc (int n_samples, int n_sync);
 
 /*!
- * \Does a demodulation of a chaotic signal modulated using differential chaos shift keying.
- * \The parameter n_samples determines the number of chaos samples per bit 
- * \( the number of samples for the demodulator must be the same as the modulator)	
- * \ We have 2*n_samples per bit if we include the reference and the data.  
- * \ingroup block
+ * \brief Differential Chaos Shift Keying (DCSK) complex demodulator.
  *
- * This uses the preferred technique: subclassing gr_block.
+ * This block implement a demodulation of a chaotic signal modulated
+ * using differential chaos shift keying.  The input is complex signal
+ * samples.  The output is the value of the best synchronized
+ * correlation value.  This block also include a synchronization
+ * mechanism in order to correct the phase and frequency errors of the
+ * radios.  This block allow one to encode to m-DCDSK by encoding many
+ * bits by symbols.  Contrary to the chaos_dcsk_demod_cb which make
+ * the symbol decision of the correlation sign, this block can use the
+ * digital_constellation_decoder_cb block to decode symbols from the
+ * phase.
+ *
+ * \param n_samples Number of reference chaos samples per symbol (the
+ * number of samples for the demodulator must be the same as the
+ * modulator).  Be aware that a DCSK symbol is composed of a reference
+ * and a data which have the same size.  So each output bit symbol
+ * will consume (2 * n_samples) input samples.  Take care when
+ * computing the sample rate.
+ *
+ * \param n_sync Number of sample to search for a better correlation,
+ * before and after the current symbol.  The correlation search is
+ * optimized and does not fully recompute the cross correlation at
+ * each sample.  Each search will compute two complex multiplication,
+ * one addition and one substraction.  Setting n_sync to 0 will
+ * totally disable the synchronization search.
+ *
+ * \ingroup block
  */
-
 class chaos_dcsk_demod_cc : public gr_block
 {
 private:
-  // The friend declaration allows chaos_make_dcsk_demod_cc to
-  // access the private constructor.
-
-  friend chaos_dcsk_demod_cc_sptr chaos_make_dcsk_demod_cc (int n_samples, int n_sync);
+  friend chaos_dcsk_demod_cc_sptr chaos_make_dcsk_demod_cc (int n_samples,
+							    int n_sync);
 
   int d_n_samples;
   int d_n_sync;
 
-  chaos_dcsk_demod_cc (int n_samples, int n_sync);  	// private constructor
+  chaos_dcsk_demod_cc (int n_samples, int n_sync);
 
-  unsigned int verification(unsigned int n_input_signal, int output_bits);
+  gr_complex cross_corr(const gr_complex * chaos_ref, const gr_complex * chaos_data);
 
- gr_complex cross_corr(const gr_complex * chaos_ref, const gr_complex * chaos_data);
 
- public:
+public:
 
-  int n_samples () const { return d_n_samples; }
+  int n_samples () const {
+    return d_n_samples;
+  }
+
   void set_n_samples (int n_samples);
-  
-  ~chaos_dcsk_demod_cc ();	// public destructor
+
+  ~chaos_dcsk_demod_cc ();
 
   void forecast (int noutput_items, gr_vector_int &ninput_items_required);
-
-  // Where all the action really happens
 
   int general_work (int noutput_items,
 		    gr_vector_int &ninput_items,
