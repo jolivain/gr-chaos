@@ -1,19 +1,19 @@
 /* -*- c++ -*- */
 /*
  * Copyright 2004,2010 Free Software Foundation, Inc.
- * 
+ *
  * This file is part of GNU Radio
- * 
+ *
  * GNU Radio is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * GNU Radio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with GNU Radio; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -42,7 +42,7 @@ using namespace std;
  * Create a new instance of chaos_dcsk_demod_cc and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-chaos_dcsk_demod_cc_sptr 
+chaos_dcsk_demod_cc_sptr
 chaos_make_dcsk_demod_cc (int n_samples, int n_sync)
 {
   return gnuradio::get_initial_sptr(new chaos_dcsk_demod_cc (n_samples, n_sync));
@@ -95,7 +95,7 @@ chaos_dcsk_demod_cc::set_n_samples (int n_samples)
 
 void
 chaos_dcsk_demod_cc::forecast (int noutput_items,
-			       gr_vector_int &ninput_items_required)
+                               gr_vector_int &ninput_items_required)
 {
   ninput_items_required[0] = noutput_items * 2 * d_n_samples;
 }
@@ -115,7 +115,7 @@ chaos_dcsk_demod_cc::cross_corr (const gr_complex * chaos_ref,
 }
 
 
-int 
+int
 chaos_dcsk_demod_cc::general_work (int noutput_items,
                                    gr_vector_int &ninput_items,
                                    gr_vector_const_void_star &input_items,
