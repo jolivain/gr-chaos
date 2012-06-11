@@ -1,19 +1,19 @@
 /* -*- c++ -*- */
 /*
  * Copyright 2004 Free Software Foundation, Inc.
- * 
+ *
  * This file is part of GNU Radio
- * 
+ *
  * GNU Radio is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * GNU Radio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with GNU Radio; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -64,40 +64,46 @@ CHAOS_API chaos_dcsk_demod_cb_sptr chaos_make_dcsk_demod_cb (int n_samples);
  * will consume (2 * n_samples) input samples.  Take care when
  * computing the sample rate.
  *
+ * \param n_sync Number of sample to search for a better correlation,
+ * before and after the current symbol.  The correlation search is
+ * optimized and does not fully recompute the cross correlation at
+ * each sample.  Each search will compute two complex multiplication,
+ * one addition and one substraction.  Setting n_sync to 0 will
+ * totally disable the synchronization search.
+ *
  * \ingroup block
  */
 class CHAOS_API chaos_dcsk_demod_cb : public gr_block
 {
 private:
-  // The friend declaration allows chaos_make_dcsk_demod_cb to
-  // access the private constructor.
-
-  friend CHAOS_API chaos_dcsk_demod_cb_sptr chaos_make_dcsk_demod_cb (int n_samples);
+  friend CHAOS_API chaos_dcsk_demod_cb_sptr
+    chaos_make_dcsk_demod_cb (int n_samples,
+                              int n_sync);
 
   int d_n_samples;
+  int d_n_sync;
 
-  chaos_dcsk_demod_cb (int n_samples);  	// private constructor
+  chaos_dcsk_demod_cb (int n_samples, int n_sync);
 
-  unsigned int verification(unsigned int n_input_signal,
-										       int output_bits);
+  gr_complex cross_corr(const gr_complex * chaos_ref, const gr_complex * chaos_data);
 
- gr_complex cross_corr(const gr_complex * chaos_ref, const gr_complex * chaos_data);
 
- public:
+public:
 
-  int n_samples () const { return d_n_samples; }
+  int n_samples () const {
+    return d_n_samples;
+  }
+
   void set_n_samples (int n_samples);
-  
-  ~chaos_dcsk_demod_cb ();	// public destructor
+
+  ~chaos_dcsk_demod_cb ();
 
   void forecast (int noutput_items, gr_vector_int &ninput_items_required);
 
-  // Where all the action really happens
-
   int general_work (int noutput_items,
-		    gr_vector_int &ninput_items,
-		    gr_vector_const_void_star &input_items,
-		    gr_vector_void_star &output_items);
+                    gr_vector_int &ninput_items,
+                    gr_vector_const_void_star &input_items,
+                    gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_CHAOS_DCSK_DEMOD_CB_H */
