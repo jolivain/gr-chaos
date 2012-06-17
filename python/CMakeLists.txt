@@ -39,6 +39,6 @@ GR_PYTHON_INSTALL(
 ########################################################################
 include(GrTest)
 
-#set(GR_TEST_TARGET_DEPS gnuradio-chaos)
-#set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
-#GR_ADD_TEST(qa_chaos ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_chaos.py)
+set(GR_TEST_TARGET_DEPS gnuradio-chaos)
+set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
+GR_ADD_TEST(qa_chaos ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_chaos.py)
