@@ -143,7 +143,7 @@ chaos_dcsk_demod_cf::general_work (int noutput_items,
 #endif
 
   while ((out_bits < noutput_items) &&
-         ((pos + needed_smp) < ninput_signal)) {
+         ((pos + needed_smp) <= ninput_signal)) {
 
     // Find best correlation, out of d_n_sync * 2 + 1 tries.
 
