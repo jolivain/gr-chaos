@@ -54,9 +54,6 @@ class qa_chaos (gr_unittest.TestCase):
 
         result_data = dst.data ()
 
-        print "expected", expected_result
-        print "result  ", result_data
-
         self.assertEqual (expected_result, result_data)
 
 
