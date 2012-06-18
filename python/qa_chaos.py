@@ -63,8 +63,7 @@ class qa_chaos (gr_unittest.TestCase):
         logmap_filter = chaos_swig.logmap_filter_ff()
         dst = gr.vector_sink_f ()
 
-        self.tb.connect (src, logmap_filter)
-        self.tb.connect (logmap_filter, dst)
+        self.tb.connect (src, logmap_filter, dst)
 
         self.tb.run ()
 
@@ -84,8 +83,7 @@ class qa_chaos (gr_unittest.TestCase):
         demod = chaos_swig.dcsk_demod_cb (len(chaos_values), 0)
         dst = gr.vector_sink_b ()
 
-        self.tb.connect (src, demod)
-        self.tb.connect (demod, dst)
+        self.tb.connect (src, demod, dst)
 
         self.tb.run ()
 
