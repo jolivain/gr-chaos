@@ -190,7 +190,7 @@ chaos_dcsk_demod_cb::general_work (int noutput_items,
     cout << "Best offset is " << best_id << " (" <<
       (best_id - d_n_sync) << ")." << endl;
     cout << "Reference auto corr is: " << ref << endl;
-    cout << "Output decision is: " << out_info[i] << endl;
+    cout << "Output decision is: " << (unsigned int)out_info[i] << endl;
 #endif
 
     pos += 2 * d_n_samples + best_id - d_n_sync;
