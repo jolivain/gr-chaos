@@ -76,5 +76,27 @@ class qa_chaos (gr_unittest.TestCase):
         self.assertFloatTuplesAlmostEqual (expected_result, result_data)
 
 
+    def test_003_chaos_dcsk_demod_cb (self):
+        chaos_values = (1+0j, 0+1j, -1+0j, 0-1j)
+        expected_result = (0, 1, 0, 0, 1, 1)
+        zero = chaos_values + tuple(map(lambda v: -v, chaos_values))
+        one = 2 * chaos_values
+        src_data = zero + one + zero + zero + one + one
+
+        src = gr.vector_source_c (src_data)
+        demod = chaos_swig.dcsk_demod_cb (len(chaos_values), 0)
+        dst = gr.vector_sink_b ()
+
+        self.tb.connect (src, demod)
+        self.tb.connect (demod, dst)
+
+        print "start"
+        self.tb.run ()
+
+        result_data = dst.data ()
+
+        self.assertFloatTuplesAlmostEqual (expected_result, result_data)
+
+
 if __name__ == '__main__':
     gr_unittest.main ()
