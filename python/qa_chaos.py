@@ -41,9 +41,7 @@ class qa_chaos (gr_unittest.TestCase):
 
         src_chaos = gr.vector_source_c (src_chaos_values * len(src_data_values))
         src_data = gr.vector_source_b (src_data_values)
-
         chaos_mod = chaos_swig.dcsk_mod_cbc(len(src_chaos_values))
-
         dst = gr.vector_sink_c ()
 
         self.tb.connect (src_chaos, (chaos_mod,0))
@@ -62,9 +60,8 @@ class qa_chaos (gr_unittest.TestCase):
         expected_result = map(lambda x: math.sin(math.pi / 2.0 * x), src_data)
 
         src = gr.vector_source_f (src_data)
-        dst = gr.vector_sink_f ()
-
         logmap_filter = chaos_swig.logmap_filter_ff()
+        dst = gr.vector_sink_f ()
 
         self.tb.connect (src, logmap_filter)
         self.tb.connect (logmap_filter, dst)
@@ -90,7 +87,6 @@ class qa_chaos (gr_unittest.TestCase):
         self.tb.connect (src, demod)
         self.tb.connect (demod, dst)
 
-        print "start"
         self.tb.run ()
 
         result_data = dst.data ()
