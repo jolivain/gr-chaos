@@ -21,7 +21,7 @@
 #
 
 from gnuradio import gr, gr_unittest
-#import os, time
+import math
 import chaos_swig
 
 class qa_chaos (gr_unittest.TestCase):
@@ -58,6 +58,25 @@ class qa_chaos (gr_unittest.TestCase):
         print "result  ", result_data
 
         self.assertEqual (expected_result, result_data)
+
+
+    def test_002_chaos_logmap_filter_ff (self):
+        src_data = map(lambda x: x/100.0, range(-100, 101))
+        expected_result = map(lambda x: math.sin(math.pi / 2.0 * x), src_data)
+
+        src = gr.vector_source_f (src_data)
+        dst = gr.vector_sink_f ()
+
+        logmap_filter = chaos_swig.logmap_filter_ff()
+
+        self.tb.connect (src, logmap_filter)
+        self.tb.connect (logmap_filter, dst)
+
+        self.tb.run ()
+
+        result_data = dst.data ()
+
+        self.assertFloatTuplesAlmostEqual (expected_result, result_data)
 
 
 if __name__ == '__main__':
