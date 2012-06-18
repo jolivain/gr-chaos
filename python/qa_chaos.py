@@ -20,7 +20,7 @@
 # Boston, MA 02110-1301, USA.
 #
 
-from gnuradio import gr, gr_unittest
+from gnuradio import gr, digital, gr_unittest
 import math
 import chaos_swig
 
@@ -92,6 +92,27 @@ class qa_chaos (gr_unittest.TestCase):
         result_data = dst.data ()
 
         self.assertFloatTuplesAlmostEqual (expected_result, result_data)
+
+
+    def test_004_chaos_dcsk_demod_cf (self):
+        chaos_values = (1+0j, 0+1j, -1+0j, 0-1j)
+        expected_result = (0, 1, 0, 0, 1, 1)
+        zero = chaos_values + tuple(map(lambda v: -v, chaos_values))
+        one = 2 * chaos_values
+        src_data = zero + one + zero + zero + one + one
+
+        src = gr.vector_source_c (src_data)
+        demod = chaos_swig.dcsk_demod_cf (len(chaos_values), 0)
+        slicer = digital.binary_slicer_fb()
+        dst = gr.vector_sink_b ()
+
+        self.tb.connect (src, demod, slicer, dst)
+
+        self.tb.run ()
+
+        result_data = dst.data ()
+
+        self.assertEqual (expected_result, result_data)
 
 
 if __name__ == '__main__':
