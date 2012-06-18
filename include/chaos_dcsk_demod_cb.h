@@ -47,7 +47,7 @@ typedef boost::shared_ptr<chaos_dcsk_demod_cb> chaos_dcsk_demod_cb_sptr;
  * constructor is private.  chaos_make_dcsk_demod_cb is the public
  * interface for creating new instances.
  */
-CHAOS_API chaos_dcsk_demod_cb_sptr chaos_make_dcsk_demod_cb (int n_samples);
+CHAOS_API chaos_dcsk_demod_cb_sptr chaos_make_dcsk_demod_cb (int n_samples, int n_sync);
 
 /*!
  * \brief Differential Chaos Shift Keying (DCSK) demodulator.
