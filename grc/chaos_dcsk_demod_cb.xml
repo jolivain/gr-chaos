@@ -4,13 +4,20 @@
   <key>chaos_dcsk_demod_cb</key>
   <category>Chaos</category>
   <import>import chaos</import>
-  <make>chaos.dcsk_demod_cb($n_samples)</make>
+  <make>chaos.dcsk_demod_cb($n_samples, $n_sync)</make>
   <callback>set_n_samples($n_samples)</callback>
 
   <param>
-    <name>Number of samples</name>
+    <name>Ref samples</name>
     <key>n_samples</key>
     <value>50</value>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Sync samples</name>
+    <key>n_sync</key>
+    <value>5</value>
     <type>int</type>
   </param>
 
