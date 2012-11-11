@@ -50,9 +50,31 @@ typedef boost::shared_ptr<chaos_gen_logi_map_f> chaos_gen_logi_map_f_sptr;
 CHAOS_API chaos_gen_logi_map_f_sptr chaos_make_gen_logi_map_f (float seed);
 
 /*!
- * \brief Generates chaos samples depending on the initial seed.
+ * \brief Chaos samples generator.
  *
- * This uses the preferred technique: subclassing gr_sync_block.
+ * This block is a naive implementation of chaos generator using the
+ * logistic map function.  This function is defined as:
+ *
+ * X_0 = seed
+ * X_{n+1} = 1 - 2 * X_n^2
+ *
+ * Warning: this implementation is for testing purposes only.  It use
+ * a float internal state, which may create short loops in the output.
+ * At high sampling rate, this result to a poor randomness.  You
+ * should prefer a better implementation.  As a workaround, see the
+ * LogMap Filter (logmap_filter_ff) block.
+ *
+ * See references:
+ *
+ * F. C. M. Lau and C. K. Tse, "Chaos-Based Digital Communication
+ * Systems", Springer-Verlag, pp.51-52, 2003
+ *
+ * G. Kaddoum, J. Olivain, G. Beaufort Samson, P. Giard, F. Gagnon,
+ * "Implementation of a Differential Chaos Shift Keying
+ * Communication system in GNU Radio, International Symposium on
+ * Wireless Communication Systems (ISWCS), August, 2012.
+ *
+ * \param seed  Initial value of the generator.
  */
 class CHAOS_API chaos_gen_logi_map_f : public gr_sync_block
 {

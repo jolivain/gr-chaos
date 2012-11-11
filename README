@@ -1,3 +1,27 @@
 This is the gr-chaos package.
 
-This is a toolkit for GNU Radio for implementing chaotic modulations.
+This is a toolkit for implementing chaotic modulations with GNU Radio.
+
+This code is the reference software used in the paper:
+
+  G. Kaddoum, J. Olivain, G. Beaufort Samson, P. Giard, F. Gagnon,
+  "Implementation of a Differential Chaos Shift Keying
+  Communication system in GNU Radio, International Symposium on
+  Wireless Communication Systems (ISWCS), August, 2012.
+
+See also examples available in the gr-chaos/examples directory.
+
+How to build and install gr-chaos:
+(Assuming you have development tools and GNU Radio already installed)
+
+git clone git://github.com/jolivain/gr-chaos.git
+mkdir gr-chaos/build
+cd gr-chaos/build
+cmake ..
+make
+sudo make install
+
+
+Feedback and comments are welcome !
+
+Julien Olivain <julien.olivain@lacime.etsmtl.ca>

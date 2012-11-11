@@ -50,22 +50,29 @@ typedef boost::shared_ptr<chaos_logmap_filter_ff> chaos_logmap_filter_ff_sptr;
 CHAOS_API chaos_logmap_filter_ff_sptr chaos_make_logmap_filter_ff ();
 
 /*!
- * \brief square2 a stream of floats.
- * \ingroup block
+ * \brief Filter block for transforming a uniform random source to one
+ * equivalent of a logistic map function.
  *
- * This uses the preferred technique: subclassing gr_sync_block.
+ * The purpose of this filter is to use a good uniform random number
+ * generator as a source of chaos.
+ *
+ * See reference:
+ *   G. Kaddoum, J. Olivain, G. Beaufort Samson, P. Giard, F. Gagnon,
+ *   "Implementation of a Differential Chaos Shift Keying
+ *   Communication system in GNU Radio, International Symposium on
+ *   Wireless Communication Systems (ISWCS), August, 2012.
+ *
+ * \ingroup block
  */
 class CHAOS_API chaos_logmap_filter_ff : public gr_sync_block
 {
 private:
-  // The friend declaration allows howto_make_square2_ff to
-  // access the private constructor.
 
   friend CHAOS_API chaos_logmap_filter_ff_sptr chaos_make_logmap_filter_ff ();
 
   chaos_logmap_filter_ff ();  	// private constructor
 
- public:
+public:
   ~chaos_logmap_filter_ff ();	// public destructor
 
   // Where all the action really happens

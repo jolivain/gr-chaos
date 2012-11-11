@@ -77,6 +77,12 @@ CHAOS_API chaos_dcsk_demod_cc_sptr chaos_make_dcsk_demod_cc (int n_samples, int 
  * one addition and one substraction.  Setting n_sync to 0 will
  * totally disable the synchronization search.
  *
+ * See reference:
+ *   G. Kaddoum, J. Olivain, G. Beaufort Samson, P. Giard, F. Gagnon,
+ *   "Implementation of a Differential Chaos Shift Keying
+ *   Communication system in GNU Radio, International Symposium on
+ *   Wireless Communication Systems (ISWCS), August, 2012.
+ *
  * \ingroup block
  */
 class CHAOS_API chaos_dcsk_demod_cc : public gr_block
