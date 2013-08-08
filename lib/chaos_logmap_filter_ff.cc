@@ -61,7 +61,7 @@ static const int MAX_OUT = 1;	// maximum number of output streams
  * The private constructor
  */
 chaos_logmap_filter_ff::chaos_logmap_filter_ff ()
-  : gr_sync_block ("square2_ff",
+  : gr_sync_block ("logmap_filter_ff",
 		   gr_make_io_signature (MIN_IN, MAX_IN, sizeof (float)),
 		   gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (float)))
 {
