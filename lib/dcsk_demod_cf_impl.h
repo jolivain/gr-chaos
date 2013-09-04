@@ -18,39 +18,34 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#ifndef INCLUDED_CHAOS_DCSK_DEMOD_CF_IMPL_H
+#define INCLUDED_CHAOS_DCSK_DEMOD_CF_IMPL_H
 
-#ifndef INCLUDED_CHAOS_DCSK_DEMOD_CB_H
-#define INCLUDED_CHAOS_DCSK_DEMOD_CB_H
-
-#include <chaos/api.h>
-#include <gnuradio/block.h>
+#include <chaos/dcsk_demod_cf.h>
 
 namespace gr {
   namespace chaos {
 
-    /*!
-     * \brief <+description of block+>
-     * \ingroup chaos
-     *
-     */
-    class CHAOS_API dcsk_demod_cb : virtual public gr::block
+    class dcsk_demod_cf_impl : public dcsk_demod_cf
     {
-     public:
-      typedef boost::shared_ptr<dcsk_demod_cb> sptr;
+     private:
+      // Nothing to declare in this block.
 
-      /*!
-       * \brief Return a shared_ptr to a new instance of chaos::dcsk_demod_cb.
-       *
-       * To avoid accidental use of raw pointers, chaos::dcsk_demod_cb's
-       * constructor is in a private implementation
-       * class. chaos::dcsk_demod_cb::make is the public interface for
-       * creating new instances.
-       */
-      static sptr make(int n_samples, int n_sync);
+     public:
+      dcsk_demod_cf_impl(int n_samples, int n_sync);
+      ~dcsk_demod_cf_impl();
+
+      // Where all the action really happens
+      void forecast (int noutput_items, gr_vector_int &ninput_items_required);
+
+      int general_work(int noutput_items,
+		       gr_vector_int &ninput_items,
+		       gr_vector_const_void_star &input_items,
+		       gr_vector_void_star &output_items);
     };
 
   } // namespace chaos
 } // namespace gr
 
-#endif /* INCLUDED_CHAOS_DCSK_DEMOD_CB_H */
+#endif /* INCLUDED_CHAOS_DCSK_DEMOD_CF_IMPL_H */
 

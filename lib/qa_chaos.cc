@@ -1,6 +1,5 @@
-/* -*- c++ -*- */
 /*
- * Copyright 2010 Free Software Foundation, Inc.
+ * Copyright 2012 Free Software Foundation, Inc.
  *
  * This file is part of GNU Radio
  *
@@ -19,26 +18,19 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#include <iostream>
 
-/*!
- * \brief Models the mammal Aadvark.
- *
- * Sadly the model is incomplete and cannot capture all aspects of an aadvark yet.
- *
- * This line is uninformative and is only to test line breaks in the comments.
+/*
+ * This class gathers together all the test cases for the gr-filter
+ * directory into a single test suite.  As you create new test cases,
+ * add them here.
  */
-class Aadvark {
-public:
-  //! \brief Outputs the vital aadvark statistics.
-  void print();
-  //! \param aaness The aadvarkness of an aadvark is a measure of how aadvarky it is.
-  Aadvark(int aaness);
-  int get_aadvarkness();
-private:
-  int aadvarkness;
-};
 
-bool aadvarky_enough(Aadvark aad);
+#include "qa_chaos.h"
 
-int main();
+CppUnit::TestSuite *
+qa_chaos::suite()
+{
+  CppUnit::TestSuite *s = new CppUnit::TestSuite("chaos");
+
+  return s;
+}

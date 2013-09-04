@@ -18,39 +18,31 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#ifndef INCLUDED_CHAOS_LOGMAP_FILTER_FF_IMPL_H
+#define INCLUDED_CHAOS_LOGMAP_FILTER_FF_IMPL_H
 
-#ifndef INCLUDED_CHAOS_DCSK_DEMOD_CB_H
-#define INCLUDED_CHAOS_DCSK_DEMOD_CB_H
-
-#include <chaos/api.h>
-#include <gnuradio/block.h>
+#include <chaos/logmap_filter_ff.h>
 
 namespace gr {
   namespace chaos {
 
-    /*!
-     * \brief <+description of block+>
-     * \ingroup chaos
-     *
-     */
-    class CHAOS_API dcsk_demod_cb : virtual public gr::block
+    class logmap_filter_ff_impl : public logmap_filter_ff
     {
-     public:
-      typedef boost::shared_ptr<dcsk_demod_cb> sptr;
+     private:
+      // Nothing to declare in this block.
 
-      /*!
-       * \brief Return a shared_ptr to a new instance of chaos::dcsk_demod_cb.
-       *
-       * To avoid accidental use of raw pointers, chaos::dcsk_demod_cb's
-       * constructor is in a private implementation
-       * class. chaos::dcsk_demod_cb::make is the public interface for
-       * creating new instances.
-       */
-      static sptr make(int n_samples, int n_sync);
+     public:
+      logmap_filter_ff_impl();
+      ~logmap_filter_ff_impl();
+
+      // Where all the action really happens
+      int work(int noutput_items,
+	       gr_vector_const_void_star &input_items,
+	       gr_vector_void_star &output_items);
     };
 
   } // namespace chaos
 } // namespace gr
 
-#endif /* INCLUDED_CHAOS_DCSK_DEMOD_CB_H */
+#endif /* INCLUDED_CHAOS_LOGMAP_FILTER_FF_IMPL_H */
 

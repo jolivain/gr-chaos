@@ -1,4 +1,4 @@
-# Copyright 2011 Free Software Foundation, Inc.
+# Copyright 2011,2012 Free Software Foundation, Inc.
 #
 # This file is part of GNU Radio
 #
@@ -22,14 +22,18 @@
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
 
-add_library(gnuradio-chaos SHARED 
-    chaos_dcsk_demod_cb.cc
-    chaos_dcsk_demod_cc.cc
-    chaos_dcsk_demod_cf.cc
-    chaos_dcsk_mod_cbc.cc
-    chaos_gen_logi_map_f.cc
-    chaos_logmap_filter_ff.cc)
-target_link_libraries(gnuradio-chaos ${Boost_LIBRARIES} ${GRUEL_LIBRARIES} ${GNURADIO_CORE_LIBRARIES})
+include_directories(${Boost_INCLUDE_DIR})
+link_directories(${Boost_LIBRARY_DIRS})
+list(APPEND chaos_sources
+    dcsk_demod_cb_impl.cc
+    dcsk_demod_cf_impl.cc
+    dcsk_demod_cc_impl.cc
+    dcsk_mod_cbc_impl.cc
+    gen_logi_map_f_impl.cc
+    logmap_filter_ff_impl.cc )
+
+add_library(gnuradio-chaos SHARED ${chaos_sources})
+target_link_libraries(gnuradio-chaos ${Boost_LIBRARIES} ${GNURADIO_RUNTIME_LIBRARIES})
 set_target_properties(gnuradio-chaos PROPERTIES DEFINE_SYMBOL "gnuradio_chaos_EXPORTS")
 
 ########################################################################
@@ -44,17 +48,23 @@ install(TARGETS gnuradio-chaos
 ########################################################################
 # Build and register unit test
 ########################################################################
-find_package(Boost COMPONENTS unit_test_framework)
-
 include(GrTest)
-set(GR_TEST_TARGET_DEPS gnuradio-chaos)
-#turn each test cpp file into an executable with an int main() function
-add_definitions(-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN)
 
-#add_executable(qa_chaos_square_ff qa_chaos_square_ff.cc)
-#target_link_libraries(qa_chaos_square_ff gnuradio-chaos ${Boost_LIBRARIES})
-#GR_ADD_TEST(qa_chaos_square_ff qa_chaos_square_ff)
+include_directories(${CPPUNIT_INCLUDE_DIRS})
 
-#add_executable(qa_chaos_square2_ff qa_chaos_square2_ff.cc)
-#target_link_libraries(qa_chaos_square2_ff gnuradio-chaos ${Boost_LIBRARIES})
-#GR_ADD_TEST(qa_chaos_square2_ff qa_chaos_square2_ff)
+list(APPEND test_chaos_sources
+    ${CMAKE_CURRENT_SOURCE_DIR}/test_chaos.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/qa_chaos.cc
+)
+
+add_executable(test-chaos ${test_chaos_sources})
+
+target_link_libraries(
+  test-chaos
+  ${GNURADIO_RUNTIME_LIBRARIES}
+  ${Boost_LIBRARIES}
+  ${CPPUNIT_LIBRARIES}
+  gnuradio-chaos
+)
+
+GR_ADD_TEST(test_chaos test-chaos)

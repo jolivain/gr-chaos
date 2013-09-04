@@ -1,4 +1,4 @@
-# Copyright 2011 Free Software Foundation, Inc.
+# Copyright 2011,2012 Free Software Foundation, Inc.
 #
 # This file is part of GNU Radio
 #
@@ -21,11 +21,11 @@
 # Install public header files
 ########################################################################
 install(FILES
-    chaos_dcsk_demod_cb.h
-    chaos_dcsk_demod_cc.h
-    chaos_dcsk_demod_cf.h
-    chaos_dcsk_mod_cbc.h
-    chaos_gen_logi_map_f.h
-    chaos_logmap_filter_ff.h
-    DESTINATION include/chaos
+    api.h
+    dcsk_demod_cb.h
+    dcsk_demod_cf.h
+    dcsk_demod_cc.h
+    dcsk_mod_cbc.h
+    gen_logi_map_f.h
+    logmap_filter_ff.h DESTINATION include/chaos
 )

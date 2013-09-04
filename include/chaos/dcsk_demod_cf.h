@@ -1,117 +1,56 @@
 /* -*- c++ -*- */
-/*
- * Copyright 2004 Free Software Foundation, Inc.
- *
- * This file is part of GNU Radio
- *
- * GNU Radio is free software; you can redistribute it and/or modify
+/* 
+ * Copyright 2013 <+YOU OR YOUR COMPANY+>.
+ * 
+ * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- *
- * GNU Radio is distributed in the hope that it will be useful,
+ * 
+ * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
- * along with GNU Radio; see the file COPYING.  If not, write to
+ * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
+
+
 #ifndef INCLUDED_CHAOS_DCSK_DEMOD_CF_H
 #define INCLUDED_CHAOS_DCSK_DEMOD_CF_H
 
-#include <chaos_api.h>
-#include <gr_block.h>
+#include <chaos/api.h>
+#include <gnuradio/block.h>
 
-class chaos_dcsk_demod_cf;
+namespace gr {
+  namespace chaos {
 
-/*
- * We use boost::shared_ptr's instead of raw pointers for all access
- * to gr_blocks (and many other data structures).  The shared_ptr gets
- * us transparent reference counting, which greatly simplifies storage
- * management issues.  This is especially helpful in our hybrid
- * C++ / Python system.
- *
- * See http://www.boost.org/libs/smart_ptr/smart_ptr.htm
- *
- * As a convention, the _sptr suffix indicates a boost::shared_ptr
- */
-typedef boost::shared_ptr<chaos_dcsk_demod_cf> chaos_dcsk_demod_cf_sptr;
+    /*!
+     * \brief <+description of block+>
+     * \ingroup chaos
+     *
+     */
+    class CHAOS_API dcsk_demod_cf : virtual public gr::block
+    {
+     public:
+      typedef boost::shared_ptr<dcsk_demod_cf> sptr;
 
-/*!
- * \brief Return a shared_ptr to a new instance of chaos_dcsk_demod_cf.
- *
- * To avoid accidental use of raw pointers, chaos_dcsk_demod_cf's
- * constructor is private.  chaos_make_dcsk_demod_cf is the public
- * interface for creating new instances.
- */
-CHAOS_API chaos_dcsk_demod_cf_sptr chaos_make_dcsk_demod_cf (int n_samples, int n_sync);
+      /*!
+       * \brief Return a shared_ptr to a new instance of chaos::dcsk_demod_cf.
+       *
+       * To avoid accidental use of raw pointers, chaos::dcsk_demod_cf's
+       * constructor is in a private implementation
+       * class. chaos::dcsk_demod_cf::make is the public interface for
+       * creating new instances.
+       */
+      static sptr make(int n_samples, int n_sync);
+    };
 
-/*!
- * \brief Differential Chaos Shift Keying (DCSK) soft demodulator.
- *
- * This block implement a demodulation of a chaotic signal modulated
- * using differential chaos shift keying.  The input is complex signal
- * samples.  The output is a soft bit stream, each bit is encoded on a
- * float (to be feeded to an error correcting code).  This block also
- * include a synchronization mechanism in order to correct the phase
- * and frequency errors of the radios.
- *
- * \param n_samples Number of reference chaos samples per symbol (the
- * number of samples for the demodulator must be the same as the
- * modulator).  Be aware that a DCSK symbol is composed of a reference
- * and a data which have the same size.  So each output bit symbol
- * will consume (2 * n_samples) input samples.  Take care when
- * computing the sample rate.
- *
- * \param n_sync Number of sample to search for a better correlation,
- * before and after the current symbol.  The correlation search is
- * optimized and does not fully recompute the cross correlation at
- * each sample.  Each search will compute two complex multiplication,
- * one addition and one substraction.  Setting n_sync to 0 will
- * totally disable the synchronization search.
- *
- * See reference:
- *   G. Kaddoum, J. Olivain, G. Beaufort Samson, P. Giard, F. Gagnon,
- *   "Implementation of a Differential Chaos Shift Keying
- *   Communication system in GNU Radio, International Symposium on
- *   Wireless Communication Systems (ISWCS), August, 2012.
- *
- * \ingroup block
- */
-class CHAOS_API chaos_dcsk_demod_cf : public gr_block
-{
-private:
-  friend CHAOS_API chaos_dcsk_demod_cf_sptr
-    chaos_make_dcsk_demod_cf (int n_samples,
-                              int n_sync);
-
-  int d_n_samples;
-  int d_n_sync;
-
-  chaos_dcsk_demod_cf (int n_samples, int n_sync);
-
-  gr_complex cross_corr(const gr_complex * chaos_ref, const gr_complex * chaos_data);
-
-
-public:
-
-  int n_samples () const {
-    return d_n_samples;
-  }
-
-  void set_n_samples (int n_samples);
-
-  ~chaos_dcsk_demod_cf ();
-
-  void forecast (int noutput_items, gr_vector_int &ninput_items_required);
-
-  int general_work (int noutput_items,
-                    gr_vector_int &ninput_items,
-                    gr_vector_const_void_star &input_items,
-                    gr_vector_void_star &output_items);
-};
+  } // namespace chaos
+} // namespace gr
 
 #endif /* INCLUDED_CHAOS_DCSK_DEMOD_CF_H */
+

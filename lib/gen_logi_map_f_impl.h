@@ -18,39 +18,31 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#ifndef INCLUDED_CHAOS_GEN_LOGI_MAP_F_IMPL_H
+#define INCLUDED_CHAOS_GEN_LOGI_MAP_F_IMPL_H
 
-#ifndef INCLUDED_CHAOS_DCSK_DEMOD_CB_H
-#define INCLUDED_CHAOS_DCSK_DEMOD_CB_H
-
-#include <chaos/api.h>
-#include <gnuradio/block.h>
+#include <chaos/gen_logi_map_f.h>
 
 namespace gr {
   namespace chaos {
 
-    /*!
-     * \brief <+description of block+>
-     * \ingroup chaos
-     *
-     */
-    class CHAOS_API dcsk_demod_cb : virtual public gr::block
+    class gen_logi_map_f_impl : public gen_logi_map_f
     {
-     public:
-      typedef boost::shared_ptr<dcsk_demod_cb> sptr;
+     private:
+      // Nothing to declare in this block.
 
-      /*!
-       * \brief Return a shared_ptr to a new instance of chaos::dcsk_demod_cb.
-       *
-       * To avoid accidental use of raw pointers, chaos::dcsk_demod_cb's
-       * constructor is in a private implementation
-       * class. chaos::dcsk_demod_cb::make is the public interface for
-       * creating new instances.
-       */
-      static sptr make(int n_samples, int n_sync);
+     public:
+      gen_logi_map_f_impl(float seed);
+      ~gen_logi_map_f_impl();
+
+      // Where all the action really happens
+      int work(int noutput_items,
+	       gr_vector_const_void_star &input_items,
+	       gr_vector_void_star &output_items);
     };
 
   } // namespace chaos
 } // namespace gr
 
-#endif /* INCLUDED_CHAOS_DCSK_DEMOD_CB_H */
+#endif /* INCLUDED_CHAOS_GEN_LOGI_MAP_F_IMPL_H */
 

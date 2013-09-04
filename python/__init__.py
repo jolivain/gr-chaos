@@ -19,7 +19,8 @@
 # The presence of this file turns this directory into a Python package
 
 '''
-This is the GNU Radio Chaos module.
+This is the GNU Radio CHAOS module. Place your Python package
+description here (python/__init__.py).
 '''
 
 # ----------------------------------------------------------------
