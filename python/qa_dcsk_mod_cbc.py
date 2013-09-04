@@ -19,7 +19,7 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-from gnuradio import gr, gr_unittest
+from gnuradio import gr, gr_unittest, blocks
 import chaos_swig as chaos
 
 class qa_dcsk_mod_cbc (gr_unittest.TestCase):
@@ -31,9 +31,26 @@ class qa_dcsk_mod_cbc (gr_unittest.TestCase):
         self.tb = None
 
     def test_001_t (self):
-        # set up fg
+        src_chaos_values = (1+0j, 0+1j, -1+0j, 0-1j)
+        src_data_values = (0, 1, 0, 0, 1, 1)
+        zero = src_chaos_values + tuple(map(lambda v: -v, src_chaos_values))
+        one = 2 * src_chaos_values
+        expected_result = zero + one + zero + zero + one + one
+
+        src_chaos = blocks.vector_source_c (src_chaos_values * len(src_data_values))
+        src_data = blocks.vector_source_b (src_data_values)
+        chaos_mod = chaos.dcsk_mod_cbc(len(src_chaos_values))
+        dst = blocks.vector_sink_c ()
+
+        self.tb.connect (src_chaos, (chaos_mod,0))
+        self.tb.connect (src_data, (chaos_mod,1))
+        self.tb.connect (chaos_mod, dst)
+
         self.tb.run ()
-        # check data
+
+        result_data = dst.data ()
+
+        self.assertEqual (expected_result, result_data)
 
 
 if __name__ == '__main__':
