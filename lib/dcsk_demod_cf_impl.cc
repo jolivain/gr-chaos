@@ -40,8 +40,8 @@ namespace gr {
      */
     dcsk_demod_cf_impl::dcsk_demod_cf_impl(int n_samples, int n_sync)
       : gr::block("dcsk_demod_cf",
-              gr::io_signature::make(<+MIN_IN+>, <+MAX_IN+>, sizeof(<+ITYPE+>)),
-              gr::io_signature::make(<+MIN_OUT+>, <+MAX_OUT+>, sizeof(<+OTYPE+>)))
+              gr::io_signature::make(1, 1, sizeof(gr_complex)),
+              gr::io_signature::make(1, 1, sizeof(float)))
     {}
 
     /*
@@ -63,8 +63,8 @@ namespace gr {
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
-        const <+ITYPE*> *in = (const <+ITYPE*> *) input_items[0];
-        <+OTYPE*> *out = (<+OTYPE*> *) output_items[0];
+        const gr_complex *in = (const gr_complex *) input_items[0];
+        float *out = (float *) output_items[0];
 
         // Do <+signal processing+>
         // Tell runtime system how many input items we consumed on

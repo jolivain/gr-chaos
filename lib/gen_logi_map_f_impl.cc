@@ -41,7 +41,7 @@ namespace gr {
     gen_logi_map_f_impl::gen_logi_map_f_impl(float seed)
       : gr::sync_block("gen_logi_map_f",
               gr::io_signature::make(0, 0, 0),
-              gr::io_signature::make(<+MIN_OUT+>, <+MAX_OUT+>, sizeof(<+OTYPE+>)))
+              gr::io_signature::make(1, 1, sizeof(float)))
     {}
 
     /*
@@ -56,7 +56,7 @@ namespace gr {
 			  gr_vector_const_void_star &input_items,
 			  gr_vector_void_star &output_items)
     {
-        <+OTYPE+> *out = (<+OTYPE+> *) output_items[0];
+        float *out = (float *) output_items[0];
 
         // Do <+signal processing+>
 
