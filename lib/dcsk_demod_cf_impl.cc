@@ -22,6 +22,12 @@
 #include "config.h"
 #endif
 
+// #define DCSK_DEBUG
+
+#ifdef DCSK_DEBUG
+#include <iostream>
+#endif
+
 #include <gnuradio/io_signature.h>
 #include "dcsk_demod_cf_impl.h"
 
@@ -40,9 +46,12 @@ namespace gr {
      */
     dcsk_demod_cf_impl::dcsk_demod_cf_impl(int n_samples, int n_sync)
       : gr::block("dcsk_demod_cf",
-              gr::io_signature::make(1, 1, sizeof(gr_complex)),
-              gr::io_signature::make(1, 1, sizeof(float)))
-    {}
+                  gr::io_signature::make(1, 1, sizeof(gr_complex)),
+                  gr::io_signature::make(1, 1, sizeof(float))),
+        d_n_sync(n_sync)
+    {
+      set_n_samples(n_samples);
+    }
 
     /*
      * Our virtual destructor.
@@ -52,9 +61,33 @@ namespace gr {
     }
 
     void
+    dcsk_demod_cf_impl::set_n_samples (int n_samples)
+    {
+      if (n_samples < 1)
+        n_samples = 1;
+
+      d_n_samples = n_samples;
+
+      set_relative_rate(1.0 / (double)(2 * n_samples));
+    }
+
+    void
     dcsk_demod_cf_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
     {
-        /* <+forecast+> e.g. ninput_items_required[0] = noutput_items */
+      ninput_items_required[0] = noutput_items * 2 * d_n_samples;
+    }
+
+    gr_complex
+    dcsk_demod_cf_impl::cross_corr (const gr_complex * chaos_ref,
+                                    const gr_complex * chaos_data)
+    {
+      int i;
+      gr_complex correlation(0.0, 0.0);
+
+      for (i = 0; i < d_n_samples; i++)
+        correlation += (chaos_ref[i] * conj(chaos_data[i]));
+
+      return correlation;
     }
 
     int
@@ -63,16 +96,90 @@ namespace gr {
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
-        const gr_complex *in = (const gr_complex *) input_items[0];
-        float *out = (float *) output_items[0];
+      const unsigned int needed_smp = 2 * d_n_samples + 2 * d_n_sync;
+      const gr_complex *in_signal = (const gr_complex *) input_items[0];
+      unsigned int ninput_signal = ninput_items[0];
+      float *out_info = (float *) output_items[0];
+      gr_complex cor(0, 0);
+      gr_complex ref(0, 0);
+      int out_bits = 0;
+      gr_complex best_cor(0.0, 0.0);
+      int best_id = 0;
+      unsigned int pos = 0;
+      int i;
 
-        // Do <+signal processing+>
-        // Tell runtime system how many input items we consumed on
-        // each input stream.
-        consume_each (noutput_items);
+      // Check somewhere that n_sync < n_sample/2
 
-        // Tell runtime system how many output items we produced.
-        return noutput_items;
+#ifdef DCSK_DEBUG
+      std::cout << "----------------------" << std::endl;
+      std::cout << "Begin: input samples: " << ninput_signal
+           << " output samples: " << noutput_items
+           << std::endl;
+#endif
+
+      while ((out_bits < noutput_items) &&
+             ((pos + needed_smp) <= ninput_signal)) {
+
+        // Find best correlation, out of d_n_sync * 2 + 1 tries.
+
+        // compute initial correlation
+        cor = cross_corr(&in_signal[pos],
+                         &in_signal[pos + d_n_samples]);
+        best_cor = cor;
+
+#ifdef DCSK_DEBUG
+        std::cout << "loop pos=" << pos << std::endl;
+        std::cout << "Starting at sample: " << in_signal[pos] << std::endl;
+        std::cout << "Initial correlation: " << cor << " mag=" << abs(cor) << std::endl;
+#endif
+
+        for (i = 1; i < d_n_sync * 2 + 1; i++) {
+          //cor = cross_corr(&in_signal[pos + i],
+          //                 &in_signal[pos + i + d_n_samples]);
+          // Optimization: instead of recomputing the whole correlation,
+          // slide the correlation by one sample to the right:
+          // substract the outgoing samples and add the incoming ones.
+
+          cor +=
+            ( in_signal[pos + d_n_samples + i] *
+              conj(in_signal[pos + 2 * d_n_samples + i]))
+            -
+            in_signal[pos + i] * conj(in_signal[pos + d_n_samples + i]);
+
+          if (abs(cor) > abs(best_cor)) {
+            best_cor = cor;
+            best_id = i;
+#ifdef DCSK_DEBUG
+            std::cout << "Found best cor=" <<
+              abs(best_cor) << " at " << best_id << std::endl;
+#endif
+          }
+        }
+
+        ref = cross_corr(&in_signal[pos + best_id],
+                         &in_signal[pos + best_id]);
+
+        out_info[out_bits] = best_cor.real() / ref.real();
+
+#ifdef DCSK_DEBUG
+        std::cout << "Best offset is " << best_id << " (" <<
+          (best_id - d_n_sync) << ")." << std::endl;
+        std::cout << "Reference auto corr is: " << ref << std::endl;
+        std::cout << "Output decision is: " << out_info[out_bits] << std::endl;
+#endif
+
+        pos += 2 * d_n_samples + best_id - d_n_sync;
+        out_bits++;
+      }
+
+#ifdef DCSK_DEBUG
+      std::cout << "Consumed " << pos << " samples" << std::endl;
+      std::cout << "Produced " << out_bits << " bits" << std::endl << std::endl;
+#endif
+
+      consume_each(pos);
+
+      return (out_bits);
     }
 
   } /* namespace chaos */

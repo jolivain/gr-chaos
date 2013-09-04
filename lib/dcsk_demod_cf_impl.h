@@ -29,7 +29,9 @@ namespace gr {
     class dcsk_demod_cf_impl : public dcsk_demod_cf
     {
      private:
-      // Nothing to declare in this block.
+      int d_n_samples;
+      int d_n_sync;
+      gr_complex cross_corr(const gr_complex * chaos_ref, const gr_complex * chaos_data);
 
      public:
       dcsk_demod_cf_impl(int n_samples, int n_sync);
@@ -42,6 +44,12 @@ namespace gr {
 		       gr_vector_int &ninput_items,
 		       gr_vector_const_void_star &input_items,
 		       gr_vector_void_star &output_items);
+
+      int n_samples () const {
+        return (d_n_samples);
+      }
+
+      void set_n_samples (int n_samples);
     };
 
   } // namespace chaos

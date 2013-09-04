@@ -40,9 +40,12 @@ namespace gr {
      */
     gen_logi_map_f_impl::gen_logi_map_f_impl(float seed)
       : gr::sync_block("gen_logi_map_f",
-              gr::io_signature::make(0, 0, 0),
-              gr::io_signature::make(1, 1, sizeof(float)))
-    {}
+                       gr::io_signature::make(0, 0, 0),
+                       gr::io_signature::make(1, 1, sizeof(float))),
+        d_seed(seed)
+    {
+      next_val = d_seed;
+    }
 
     /*
      * Our virtual destructor.
@@ -51,17 +54,30 @@ namespace gr {
     {
     }
 
+    float
+    gen_logi_map_f_impl::gen_next_chaos()
+    {
+      float val;
+
+      val = next_val;
+      next_val = 1.0 - 2.0 * (val * val);
+
+      return (val);
+    }
+
     int
     gen_logi_map_f_impl::work(int noutput_items,
-			  gr_vector_const_void_star &input_items,
-			  gr_vector_void_star &output_items)
+                              gr_vector_const_void_star &input_items,
+                              gr_vector_void_star &output_items)
     {
-        float *out = (float *) output_items[0];
+      float *out_samples = (float *) output_items[0];
+      int i;
 
-        // Do <+signal processing+>
+      for (i = 0; i < noutput_items; i++) {
+        out_samples[i] = gen_next_chaos();
+      }
 
-        // Tell runtime system how many output items we produced.
-        return noutput_items;
+      return (noutput_items);
     }
 
   } /* namespace chaos */

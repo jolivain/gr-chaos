@@ -29,7 +29,11 @@ namespace gr {
     class dcsk_mod_cbc_impl : public dcsk_mod_cbc
     {
      private:
-      // Nothing to declare in this block.
+      int d_n_samples;
+      unsigned int verification(unsigned int n_input_chaos,
+                                unsigned int data_bits,
+                                int n_output_items);
+
 
      public:
       dcsk_mod_cbc_impl(int n_samples);
@@ -42,6 +46,12 @@ namespace gr {
 		       gr_vector_int &ninput_items,
 		       gr_vector_const_void_star &input_items,
 		       gr_vector_void_star &output_items);
+
+      int n_samples () const {
+        return (d_n_samples);
+      }
+
+      void set_n_samples (int n_samples);
     };
 
   } // namespace chaos

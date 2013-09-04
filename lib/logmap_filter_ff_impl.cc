@@ -40,9 +40,10 @@ namespace gr {
      */
     logmap_filter_ff_impl::logmap_filter_ff_impl()
       : gr::sync_block("logmap_filter_ff",
-              gr::io_signature::make(1, 1, sizeof(float)),
-              gr::io_signature::make(1, 1, sizeof(float)))
-    {}
+                       gr::io_signature::make(1, 1, sizeof(float)),
+                       gr::io_signature::make(1, 1, sizeof(float)))
+    {
+    }
 
     /*
      * Our virtual destructor.
@@ -53,16 +54,18 @@ namespace gr {
 
     int
     logmap_filter_ff_impl::work(int noutput_items,
-			  gr_vector_const_void_star &input_items,
-			  gr_vector_void_star &output_items)
+                                gr_vector_const_void_star &input_items,
+                                gr_vector_void_star &output_items)
     {
-        const float *in = (const float *) input_items[0];
-        float *out = (float *) output_items[0];
+      const float *in = (const float *) input_items[0];
+      float *out = (float *) output_items[0];
 
-        // Do <+signal processing+>
+      for (int i = 0; i < noutput_items; i++){
+        out[i] = sin(M_PI_2 * in[i]);
+      }
 
-        // Tell runtime system how many output items we produced.
-        return noutput_items;
+      // Tell runtime system how many output items we produced.
+      return noutput_items;
     }
 
   } /* namespace chaos */

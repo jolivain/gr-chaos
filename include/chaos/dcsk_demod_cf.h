@@ -47,6 +47,9 @@ namespace gr {
        * creating new instances.
        */
       static sptr make(int n_samples, int n_sync);
+
+      virtual int n_samples() const = 0;
+      virtual void set_n_samples(int samples) = 0;
     };
 
   } // namespace chaos

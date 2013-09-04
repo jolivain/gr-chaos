@@ -29,7 +29,9 @@ namespace gr {
     class gen_logi_map_f_impl : public gen_logi_map_f
     {
      private:
-      // Nothing to declare in this block.
+      float d_seed;
+      float next_val;
+      float gen_next_chaos();
 
      public:
       gen_logi_map_f_impl(float seed);
