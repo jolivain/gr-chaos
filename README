@@ -21,6 +21,22 @@ cmake ..
 make
 sudo make install
 
+This project was started from templates generated with gr_modtool
+3.7.1.  It should now be straightforward to add new blocks using the
+"gr_modtool add" command, and answer questions interactively.  You can
+also use command line arguments to gr_modtool.  For example, to add
+the new "better_dcsk_mod_cbc" block, use the command:
+
+gr_modtool add \
+  --block-type=general \
+  --block-name=better_dcsk_mod_cbc \
+  --argument-list="int n_samples" \
+  --add-python-qa \
+  --lang=cpp
+
+For more information, please refer to the gr_modtool documentation.
+A good starting point could be:
+http://gnuradio.org/redmine/projects/gnuradio/wiki/OutOfTreeModules
 
 Feedback and comments are welcome !
 
