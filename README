@@ -36,7 +36,7 @@ gr_modtool add \
 
 For more information, please refer to the gr_modtool documentation.
 A good starting point could be:
-http://gnuradio.org/redmine/projects/gnuradio/wiki/OutOfTreeModules
+https://wiki.gnuradio.org/index.php/OutOfTreeModules
 
 Feedback and comments are welcome !
 
