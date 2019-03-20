@@ -11,15 +11,28 @@ This code is the reference software used in the paper:
 
 See also examples available in the gr-chaos/examples directory.
 
-How to build and install gr-chaos:
-(Assuming you have development tools and GNU Radio already installed)
+Before trying to build gr-chaos, install depencies, for example, on a
+Ubuntu 18.04 LTS system:
 
-git clone git://github.com/jolivain/gr-chaos.git
-mkdir gr-chaos/build
-cd gr-chaos/build
-cmake ..
-make
-sudo make install
+    sudo apt-get install git build-essential gnuradio gnuradio-dev cmake swig
+
+Then, to build and install gr-chaos:
+
+    git clone https://github.com/jolivain/gr-chaos.git
+    mkdir gr-chaos/build
+    cd gr-chaos/build
+    cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+    make -j$(nproc)
+    make test
+    sudo make install
+
+Then, to open an example:
+
+    gnuradio-companion ../examples/grc/dcsk_demo.grc
+
+The example should open a FFT sink showing the channel. After few
+second of execution, the demodulator should create a file named
+"output.txt" containing repetition of string "Hello GnuRadio!".
 
 This project was started from templates generated with gr_modtool
 3.7.1.  It should now be straightforward to add new blocks using the
